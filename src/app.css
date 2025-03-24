@@ -25,3 +25,9 @@ h2 {
 .btn-secondary { background-color: #cba6f7; border: none; }
 .section { margin-top: 20px; }
 .list-group-item { background-color: #45475a; color: #cdd6f4; }
+
+/* Side Panel Styling */
+.side-panel {
+    width: 200px;
+    min-height: 100vh;
+}

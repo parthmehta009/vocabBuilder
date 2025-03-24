@@ -9,53 +9,57 @@
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
-    <div class="container">
-        <h2>📖 Vocabulary Tracker</h2>
-        
-        <!-- Dashboard -->
-        <div class="row text-center mt-4">
-            <div class="col-md-4">
-                <h4>Mastered</h4>
-                <p id="mastered-count">0</p>
-                <button class="btn btn-primary" onclick="showSection('mastered')">View</button>
-            </div>
-            <div class="col-md-4">
-                <h4>Learning</h4>
-                <p id="learning-count">0</p>
-                <button class="btn btn-primary" onclick="showSection('learning')">View</button>
-            </div>
-            <div class="col-md-4">
-                <h4>To-Learn</h4>
-                <p id="to-learn-count">0</p>
-                <button class="btn btn-primary" onclick="showSection('to-learn')">View</button>
-            </div>
+    <div class="d-flex">
+        <!-- Side Panel -->
+        <div class="side-panel p-3 text-light">
+            <h5>Options</h5>
+            <button class="btn btn-info w-100 my-2" onclick="exportData()">Export Data</button>
+            <button class="btn btn-secondary w-100 my-2" onclick="importData()">Import Data</button>
         </div>
 
-        <!-- Sections -->
-        <div id="sections">
-            <div id="to-learn" class="section d-none">
-                <h3>To-Learn List</h3>
-                <input type="text" id="to-learn-word" placeholder="Enter word" class="form-control">
-                <button class="btn btn-success mt-2" onclick="addWord('to-learn')">Add</button>
-                <button class="btn btn-warning mt-2" onclick="bulkAddWords('to-learn')">Add Bulk</button>
-                <ul id="to-learn-list" class="list-group mt-3"></ul>
+        <!-- Main Content -->
+        <div class="container">
+            <h2>📖 Vocabulary Tracker</h2>
+
+            <!-- Dashboard -->
+            <div class="row text-center mt-4">
+                <div class="col-md-4">
+                    <h4>Mastered</h4>
+                    <p id="mastered-count">0</p>
+                    <button class="btn btn-primary" onclick="showSection('mastered')">View</button>
+                </div>
+                <div class="col-md-4">
+                    <h4>Learning</h4>
+                    <p id="learning-count">0</p>
+                    <button class="btn btn-primary" onclick="showSection('learning')">View</button>
+                </div>
+                <div class="col-md-4">
+                    <h4>To-Learn</h4>
+                    <p id="to-learn-count">0</p>
+                    <button class="btn btn-primary" onclick="showSection('to-learn')">View</button>
+                </div>
             </div>
 
-            <div id="learning" class="section d-none">
-                <h3>Learning List</h3>
-                <ul id="learning-list" class="list-group mt-3"></ul>
-            </div>
+            <!-- Sections -->
+            <div id="sections">
+                <div id="to-learn" class="section d-none">
+                    <h3>To-Learn List</h3>
+                    <input type="text" id="to-learn-word" placeholder="Enter word" class="form-control">
+                    <button class="btn btn-success mt-2" onclick="addWord('to-learn')">Add</button>
+                    <button class="btn btn-warning mt-2" onclick="bulkAddWords('to-learn')">Add Bulk</button>
+                    <ul id="to-learn-list" class="list-group mt-3"></ul>
+                </div>
 
-            <div id="mastered" class="section d-none">
-                <h3>Mastered List</h3>
-                <ul id="mastered-list" class="list-group mt-3"></ul>
+                <div id="learning" class="section d-none">
+                    <h3>Learning List</h3>
+                    <ul id="learning-list" class="list-group mt-3"></ul>
+                </div>
+
+                <div id="mastered" class="section d-none">
+                    <h3>Mastered List</h3>
+                    <ul id="mastered-list" class="list-group mt-3"></ul>
+                </div>
             </div>
-        </div>
-        
-        <!-- Export & Import -->
-        <div class="text-center mt-4">
-            <button class="btn btn-info" onclick="exportData()">Export Data</button>
-            <button class="btn btn-secondary" onclick="importData()">Import Data</button>
         </div>
     </div>
     <script src="vocab_tracker.js"></script>
