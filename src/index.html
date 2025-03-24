@@ -13,6 +13,8 @@
         <!-- Side Panel -->
         <div class="side-panel p-3 text-light">
             <h5>Options</h5>
+            <button class="btn btn-success w-100 my-2" onclick="showAddWordView()">Add Word</button>
+            <button class="btn btn-warning w-100 my-2" onclick="showBulkAddView()">Add Bulk</button>
             <button class="btn btn-info w-100 my-2" onclick="exportData()">Export Data</button>
             <button class="btn btn-secondary w-100 my-2" onclick="importData()">Import Data</button>
         </div>
@@ -44,9 +46,6 @@
             <div id="sections">
                 <div id="to-learn" class="section d-none">
                     <h3>To-Learn List</h3>
-                    <input type="text" id="to-learn-word" placeholder="Enter word" class="form-control">
-                    <button class="btn btn-success mt-2" onclick="addWord('to-learn')">Add</button>
-                    <button class="btn btn-warning mt-2" onclick="bulkAddWords('to-learn')">Add Bulk</button>
                     <ul id="to-learn-list" class="list-group mt-3"></ul>
                 </div>
 
@@ -59,6 +58,20 @@
                     <h3>Mastered List</h3>
                     <ul id="mastered-list" class="list-group mt-3"></ul>
                 </div>
+            </div>
+
+            <!-- Add Word View -->
+            <div id="add-word-view" class="d-none mt-3">
+                <h3>Add Word</h3>
+                <input type="text" id="new-word" class="form-control" placeholder="Enter word">
+                <button class="btn btn-success mt-2" onclick="addNewWord()">Submit</button>
+            </div>
+
+            <!-- Bulk Add View -->
+            <div id="bulk-add-view" class="d-none mt-3">
+                <h3>Add Bulk Words</h3>
+                <textarea id="bulk-words" class="form-control" rows="4" placeholder="Enter words, comma-separated"></textarea>
+                <button class="btn btn-warning mt-2" onclick="addBulkWords()">Submit</button>
             </div>
         </div>
     </div>

@@ -1,20 +1,44 @@
 let words = { mastered: [], learning: [], 'to-learn': [] };
 
 function showSection(section) {
+    $("#sections").removeClass("d-none");
+    $("#add-word-view").addClass("d-none");
+    $("#bulk-add-view").addClass("d-none");
+
     $("#sections .section").addClass("d-none");
     $("#" + section).removeClass("d-none");
 }
 
-function addWord(section, word = null) {
-    if (!word) {
-        word = $("#" + section + "-word").val()?.trim();
-    }
+function showAddWordView() {
+    $("#add-word-view").removeClass("d-none");
+    $("#bulk-add-view").addClass("d-none");
+    $("#sections").addClass("d-none");
+}
 
+function showBulkAddView() {
+    $("#bulk-add-view").removeClass("d-none");
+    $("#add-word-view").addClass("d-none");
+    $("#sections").addClass("d-none");
+}
+
+function addNewWord() {
+    let word = $("#new-word").val().trim();
     if (word) {
-        words[section].push(word);
+        words["to-learn"].push(word);
         updateUI();
         saveData();
-        $("#" + section + "-word").val("");
+        $("#new-word").val("");
+    }
+}
+
+function addBulkWords() {
+    let inputText = $("#bulk-words").val().trim();
+    if (inputText) {
+        let wordList = inputText.split(",").map(word => word.trim()).filter(word => word !== "");
+        words["to-learn"].push(...wordList);
+        updateUI();
+        saveData();
+        $("#bulk-words").val("");
     }
 }
 

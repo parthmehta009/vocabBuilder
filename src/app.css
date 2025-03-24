@@ -31,3 +31,11 @@ h2 {
     width: 200px;
     min-height: 100vh;
 }
+
+/* Hide sections initially */
+#add-word-view, #bulk-add-view {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
