@@ -18,6 +18,12 @@ function addWord(section, word = null) {
     }
 }
 
+function deleteWord(section, word) {
+    if (!words[section]) return; // Ensure the section exists before filtering
+    words[section] = words[section].filter(w => w !== word);
+    updateUI();
+    saveData();
+}
 
 function bulkAddWords(section) {
     let bulkWords = prompt("Enter words, comma separated:");
@@ -46,7 +52,8 @@ function updateUI() {
             } else if (section === "learning") {
                 moveButton = `<button class='btn btn-sm btn-success float-end' onclick='moveWord("${word}", "learning", "mastered")'>Move to Mastered</button>`;
             }
-            list.append(`<li class="list-group-item">${word} ${moveButton}</li>`);
+            let deleteButton = `<button class='btn btn-sm btn-danger float-end me-2' onclick='deleteWord("${word}", "${section}")'>🗑️</button>`;
+            list.append(`<li class="list-group-item d-flex justify-content-between">${word} <span>${deleteButton} ${moveButton}</span></li>`);
         });
         $("#" + section + "-count").text(words[section].length);
     });

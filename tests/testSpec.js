@@ -37,4 +37,23 @@ describe("Vocabulary Tracker Tests", function() {
         loadData();
         expect(words.mastered.includes("expert")).toBe(true);
     });
+
+    it("should delete a word from To-Learn list", function() {
+        words["to-learn"] = ["remove-me"]; // Ensure the section exists
+        deleteWord("to-learn", "remove-me");
+        expect(words["to-learn"].includes("remove-me")).toBe(false);
+    });
+
+    it("should delete a word from Learning list", function() {
+        words["learning"] = ["remove-learning"]; // Ensure the section exists
+        deleteWord("learning", "remove-learning");
+        expect(words["learning"].includes("remove-learning")).toBe(false);
+    });
+
+    it("should delete a word from Mastered list", function() {
+        words["mastered"] = ["remove-mastered"]; // Ensure the section exists
+        deleteWord("mastered", "remove-mastered");
+        expect(words["mastered"].includes("remove-mastered")).toBe(false);
+    });
+
 });
