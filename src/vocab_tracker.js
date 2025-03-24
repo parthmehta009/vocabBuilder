@@ -1,4 +1,6 @@
 let words = { mastered: [], learning: [], 'to-learn': [] };
+const wordsPerPage = 10;
+let currentPage = { mastered: 1, learning: 1, "to-learn": 1 };
 
 function showSection(section) {
     $("#sections .section").addClass("d-none"); // Hide all sections
@@ -86,18 +88,46 @@ function updateUI() {
     Object.keys(words).forEach(section => {
         let list = $("#" + section + "-list");
         list.empty();
-        words[section].forEach(word => {
+
+        // Pagination Logic
+        let startIndex = (currentPage[section] - 1) * wordsPerPage;
+        let endIndex = startIndex + wordsPerPage;
+        let paginatedWords = words[section].slice(startIndex, endIndex);
+
+        paginatedWords.forEach(word => {
             let moveButton = "";
             if (section === "to-learn") {
                 moveButton = `<button class='btn btn-sm btn-warning float-end' onclick='moveWord("${word}", "to-learn", "learning")'>Move to Learning</button>`;
             } else if (section === "learning") {
                 moveButton = `<button class='btn btn-sm btn-success float-end' onclick='moveWord("${word}", "learning", "mastered")'>Move to Mastered</button>`;
             }
+
             let deleteButton = `<button class='btn btn-sm btn-danger float-end me-2' onclick='deleteWord("${section}", "${word}")'>🗑️</button>`;
-            list.append(`<li class="list-group-item d-flex justify-content-between">${word} <span>${deleteButton} ${moveButton}</span></li>`);
+
+            list.append(`<li class="list-group-item">${word} ${deleteButton} ${moveButton}</li>`);
         });
+
+        // Update Pagination Controls
+        updatePaginationControls(section);
         $("#" + section + "-count").text(words[section].length);
     });
+}
+
+function updatePaginationControls(section) {
+    let totalPages = Math.ceil(words[section].length / wordsPerPage);
+    let paginationContainer = $("#" + section + "-pagination");
+
+    paginationContainer.html(`
+        <button class="btn btn-secondary btn-sm" onclick="changePage('${section}', -1)" ${currentPage[section] === 1 ? "disabled" : ""}>Previous</button>
+        <span class="mx-2">Page ${currentPage[section]} of ${totalPages || 1}</span>
+        <button class="btn btn-secondary btn-sm" onclick="changePage('${section}', 1)" ${currentPage[section] === totalPages ? "disabled" : ""}>Next</button>
+    `);
+}
+
+function changePage(section, direction) {
+    let totalPages = Math.ceil(words[section].length / wordsPerPage);
+    currentPage[section] = Math.max(1, Math.min(currentPage[section] + direction, totalPages));
+    updateUI();
 }
 
 function saveData() {

@@ -156,3 +156,40 @@ describe("Vocabulary Tracker Tests", function() {
     });
 
 });
+
+describe("Pagination Tests", function() {
+    beforeEach(function() {
+        localStorage.clear();
+        words = { mastered: [], learning: [], "to-learn": [] };
+        for (let i = 1; i <= 15; i++) {
+            words["to-learn"].push("word" + i);
+        }
+        $("body").append('<div id="to-learn-list"></div>');
+        $("body").append('<div id="to-learn-pagination"></div>');
+        currentPage["to-learn"] = 1;
+    });
+
+    it("should display only 10 words per page", function() {
+        updateUI();
+        expect($("#to-learn-list .list-group-item").length).toBe(10);
+    });
+
+    it("should change page when Next button is clicked", function() {
+        updateUI();
+        changePage("to-learn", 1);
+        expect(currentPage["to-learn"]).toBe(2);
+    });
+
+    it("should not go past the last page", function() {
+        updateUI();
+        changePage("to-learn", 1);
+        changePage("to-learn", 1);
+        changePage("to-learn", 1);
+        expect(currentPage["to-learn"]).toBe(2); // Should not exceed total pages
+    });
+
+    afterEach(function() {
+        $("#to-learn-list").remove();
+        $("#to-learn-pagination").remove();
+    });
+});
