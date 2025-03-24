@@ -54,6 +54,12 @@
                 <ul id="mastered-list" class="list-group mt-3"></ul>
             </div>
         </div>
+        
+        <!-- Export & Import -->
+        <div class="text-center mt-4">
+            <button class="btn btn-info" onclick="exportData()">Export Data</button>
+            <button class="btn btn-secondary" onclick="importData()">Import Data</button>
+        </div>
     </div>
 
     <script>
@@ -69,6 +75,7 @@
             if (word) {
                 words[section].push(word);
                 updateUI();
+                saveData();
                 $("#" + section + "-word").val("");
             }
         }
@@ -78,6 +85,7 @@
             if (bulkWords) {
                 words[section] = words[section].concat(bulkWords.split(",").map(w => w.trim()));
                 updateUI();
+                saveData();
             }
         }
 
@@ -85,6 +93,7 @@
             words[fromSection] = words[fromSection].filter(w => w !== word);
             words[toSection].push(word);
             updateUI();
+            saveData();
         }
 
         function updateUI() {
@@ -103,6 +112,50 @@
                 $("#" + section + "-count").text(words[section].length);
             });
         }
+
+        function saveData() {
+            localStorage.setItem("vocabData", JSON.stringify(words));
+        }
+
+        function loadData() {
+            let data = localStorage.getItem("vocabData");
+            if (data) {
+                words = JSON.parse(data);
+                updateUI();
+            }
+        }
+
+        function exportData() {
+            const blob = new Blob([JSON.stringify(words, null, 2)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "vocab_data.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function importData() {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "application/json";
+            input.onchange = event => {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    words = JSON.parse(e.target.result);
+                    updateUI();
+                    saveData();
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        $(document).ready(() => {
+            loadData();
+        });
     </script>
 </body>
 </html>
