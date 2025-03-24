@@ -1,24 +1,18 @@
 let words = { mastered: [], learning: [], 'to-learn': [] };
 
 function showSection(section) {
-    $("#sections").removeClass("d-none");
-    $("#add-word-view").addClass("d-none");
-    $("#bulk-add-view").addClass("d-none");
-
-    $("#sections .section").addClass("d-none");
-    $("#" + section).removeClass("d-none");
+    $("#sections .section").addClass("d-none"); // Hide all sections
+    $("#" + section).removeClass("d-none"); // Show selected section
 }
 
 function showAddWordView() {
-    $("#add-word-view").removeClass("d-none");
-    $("#bulk-add-view").addClass("d-none");
-    $("#sections").addClass("d-none");
+    $("#sections .section").addClass("d-none"); // Hide all sections
+    $("#add-word-view").removeClass("d-none");  // Show Add Word view
 }
 
 function showBulkAddView() {
-    $("#bulk-add-view").removeClass("d-none");
-    $("#add-word-view").addClass("d-none");
-    $("#sections").addClass("d-none");
+    $("#sections .section").addClass("d-none"); // Hide all sections
+    $("#bulk-add-view").removeClass("d-none");  // Show Bulk Add view
 }
 
 function addNewWord() {

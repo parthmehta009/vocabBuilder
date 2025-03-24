@@ -3,6 +3,15 @@ describe("Vocabulary Tracker Tests", function() {
     beforeEach(function() {
         localStorage.clear();
         words = { mastered: [], learning: [], 'to-learn': [] };
+        $("body").append(`
+            <div id="sections">
+                <div id="to-learn" class="section"></div>
+                <div id="learning" class="section"></div>
+                <div id="mastered" class="section"></div>
+                <div id="add-word-view" class="section d-none"></div>
+                <div id="bulk-add-view" class="section d-none"></div>
+            </div>
+        `);
     });
 
     // ✅ Test for adding a single word
@@ -81,53 +90,28 @@ describe("Vocabulary Tracker Tests", function() {
     });
 
     // ✅ UI behavior tests for showing/hiding views
+    it("should show Add Word view and hide other sections", function() {
+        showAddWordView();
+        expect($("#add-word-view").hasClass("d-none")).toBe(false);
+        expect($("#to-learn").hasClass("d-none")).toBe(true);
+        expect($("#bulk-add-view").hasClass("d-none")).toBe(true);
+    });
+
+    it("should show Bulk Add view and hide other sections", function() {
+        showBulkAddView();
+        expect($("#bulk-add-view").hasClass("d-none")).toBe(false);
+        expect($("#add-word-view").hasClass("d-none")).toBe(true);
+        expect($("#learning").hasClass("d-none")).toBe(true);
+    });
+
     it("should hide Add Word and Bulk views when switching to a section", function() {
-        // Ensure elements exist in test DOM
-        $("body").append('<div id="add-word-view"></div>');
-        $("body").append('<div id="bulk-add-view"></div>');
-        $("body").append('<div id="sections"><div id="to-learn"></div></div>');
-
         showSection("to-learn");
-
         expect($("#add-word-view").hasClass("d-none")).toBe(true);
         expect($("#bulk-add-view").hasClass("d-none")).toBe(true);
+    });
 
-        // Cleanup
-        $("#add-word-view").remove();
-        $("#bulk-add-view").remove();
+    afterEach(function() {
         $("#sections").remove();
-    });
-
-
-    it("should show Add Word view and hide Bulk view when clicking Add Word", function() {
-        // Ensure both views exist in the test environment
-        $("body").append('<div id="add-word-view" class="d-none"></div>');
-        $("body").append('<div id="bulk-add-view"></div>');
-
-        showAddWordView();
-
-        expect($("#add-word-view").hasClass("d-none")).toBe(false); // Should be visible
-        expect($("#bulk-add-view").hasClass("d-none")).toBe(true);  // Should be hidden
-
-        // Cleanup test DOM
-        $("#add-word-view").remove();
-        $("#bulk-add-view").remove();
-    });
-
-
-    it("should show Bulk Add view and hide Add Word view when clicking Add Bulk", function() {
-        // Ensure both views exist in the test environment
-        $("body").append('<div id="add-word-view" class="d-none"></div>');
-        $("body").append('<div id="bulk-add-view" class="d-none"></div>');
-
-        showBulkAddView();
-
-        expect($("#bulk-add-view").hasClass("d-none")).toBe(false); // Should be visible
-        expect($("#add-word-view").hasClass("d-none")).toBe(true);  // Should be hidden
-
-        // Cleanup test DOM
-        $("#add-word-view").remove();
-        $("#bulk-add-view").remove();
     });
 
 });

@@ -58,21 +58,22 @@
                     <h3>Mastered List</h3>
                     <ul id="mastered-list" class="list-group mt-3"></ul>
                 </div>
+
+                <!-- Add Word View (Now inside #sections) -->
+                <div id="add-word-view" class="section d-none">
+                        <h3>Add Word</h3>
+                        <input type="text" id="new-word" class="form-control" placeholder="Enter word">
+                        <button class="btn btn-success mt-2" onclick="addNewWord()">Submit</button>
+                    </div>
+
+                <!-- Bulk Add View (Now inside #sections) -->
+                <div id="bulk-add-view" class="section d-none">
+                    <h3>Add Bulk Words</h3>
+                    <textarea id="bulk-words" class="form-control" rows="4" placeholder="Enter words, comma-separated"></textarea>
+                    <button class="btn btn-warning mt-2" onclick="addBulkWords()">Submit</button>
+                </div>
             </div>
 
-            <!-- Add Word View -->
-            <div id="add-word-view" class="d-none mt-3">
-                <h3>Add Word</h3>
-                <input type="text" id="new-word" class="form-control" placeholder="Enter word">
-                <button class="btn btn-success mt-2" onclick="addNewWord()">Submit</button>
-            </div>
-
-            <!-- Bulk Add View -->
-            <div id="bulk-add-view" class="d-none mt-3">
-                <h3>Add Bulk Words</h3>
-                <textarea id="bulk-words" class="form-control" rows="4" placeholder="Enter words, comma-separated"></textarea>
-                <button class="btn btn-warning mt-2" onclick="addBulkWords()">Submit</button>
-            </div>
         </div>
     </div>
     <script src="vocab_tracker.js"></script>
