@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Tracker</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { padding: 20px; }
+        .section { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Vocabulary Tracker</h2>
+        
+        <!-- Dashboard -->
+        <div class="row text-center mt-4">
+            <div class="col-md-4">
+                <h4>Mastered</h4>
+                <p id="mastered-count">0</p>
+                <button class="btn btn-primary" onclick="showSection('mastered')">View</button>
+            </div>
+            <div class="col-md-4">
+                <h4>Learning</h4>
+                <p id="learning-count">0</p>
+                <button class="btn btn-primary" onclick="showSection('learning')">View</button>
+            </div>
+            <div class="col-md-4">
+                <h4>To-Learn</h4>
+                <p id="to-learn-count">0</p>
+                <button class="btn btn-primary" onclick="showSection('to-learn')">View</button>
+            </div>
+        </div>
+
+        <!-- Sections -->
+        <div id="sections">
+            <div id="to-learn" class="section d-none">
+                <h3>To-Learn List</h3>
+                <input type="text" id="to-learn-word" placeholder="Enter word" class="form-control">
+                <button class="btn btn-success mt-2" onclick="addWord('to-learn')">Add</button>
+                <button class="btn btn-warning mt-2" onclick="bulkAddWords('to-learn')">Add Bulk</button>
+                <ul id="to-learn-list" class="list-group mt-3"></ul>
+            </div>
+
+            <div id="learning" class="section d-none">
+                <h3>Learning List</h3>
+                <ul id="learning-list" class="list-group mt-3"></ul>
+            </div>
+
+            <div id="mastered" class="section d-none">
+                <h3>Mastered List</h3>
+                <ul id="mastered-list" class="list-group mt-3"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let words = { mastered: [], learning: [], 'to-learn': [] };
+
+        function showSection(section) {
+            $("#sections .section").addClass("d-none");
+            $("#" + section).removeClass("d-none");
+        }
+
+        function addWord(section) {
+            let word = $("#" + section + "-word").val().trim();
+            if (word) {
+                words[section].push(word);
+                updateUI();
+                $("#" + section + "-word").val("");
+            }
+        }
+
+        function bulkAddWords(section) {
+            let bulkWords = prompt("Enter words, comma separated:");
+            if (bulkWords) {
+                words[section] = words[section].concat(bulkWords.split(",").map(w => w.trim()));
+                updateUI();
+            }
+        }
+
+        function moveWord(word, fromSection, toSection) {
+            words[fromSection] = words[fromSection].filter(w => w !== word);
+            words[toSection].push(word);
+            updateUI();
+        }
+
+        function updateUI() {
+            Object.keys(words).forEach(section => {
+                let list = $("#" + section + "-list");
+                list.empty();
+                words[section].forEach(word => {
+                    let moveButton = "";
+                    if (section === "to-learn") {
+                        moveButton = `<button class='btn btn-sm btn-warning float-end' onclick='moveWord("${word}", "to-learn", "learning")'>Move to Learning</button>`;
+                    } else if (section === "learning") {
+                        moveButton = `<button class='btn btn-sm btn-success float-end' onclick='moveWord("${word}", "learning", "mastered")'>Move to Mastered</button>`;
+                    }
+                    list.append(`<li class="list-group-item">${word} ${moveButton}</li>`);
+                });
+                $("#" + section + "-count").text(words[section].length);
+            });
+        }
+    </script>
+</body>
+</html>
