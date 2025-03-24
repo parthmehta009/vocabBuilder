@@ -52,7 +52,7 @@ function updateUI() {
             } else if (section === "learning") {
                 moveButton = `<button class='btn btn-sm btn-success float-end' onclick='moveWord("${word}", "learning", "mastered")'>Move to Mastered</button>`;
             }
-            let deleteButton = `<button class='btn btn-sm btn-danger float-end me-2' onclick='deleteWord("${word}", "${section}")'>🗑️</button>`;
+            let deleteButton = `<button class='btn btn-sm btn-danger float-end me-2' onclick='deleteWord("${section}", "${word}")'>🗑️</button>`;
             list.append(`<li class="list-group-item d-flex justify-content-between">${word} <span>${deleteButton} ${moveButton}</span></li>`);
         });
         $("#" + section + "-count").text(words[section].length);
