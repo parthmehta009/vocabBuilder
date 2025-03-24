@@ -5,8 +5,11 @@ function showSection(section) {
     $("#" + section).removeClass("d-none");
 }
 
-function addWord(section) {
-    let word = $("#" + section + "-word").val().trim();
+function addWord(section, word = null) {
+    if (!word) {
+        word = $("#" + section + "-word").val()?.trim();
+    }
+
     if (word) {
         words[section].push(word);
         updateUI();
@@ -14,6 +17,7 @@ function addWord(section) {
         $("#" + section + "-word").val("");
     }
 }
+
 
 function bulkAddWords(section) {
     let bulkWords = prompt("Enter words, comma separated:");
@@ -24,12 +28,25 @@ function bulkAddWords(section) {
     }
 }
 
+function moveWord(word, fromSection, toSection) {
+    words[fromSection] = words[fromSection].filter(w => w !== word);
+    words[toSection].push(word);
+    updateUI();
+    saveData();
+}
+
 function updateUI() {
     Object.keys(words).forEach(section => {
         let list = $("#" + section + "-list");
         list.empty();
         words[section].forEach(word => {
-            list.append(`<li class="list-group-item">${word}</li>`);
+            let moveButton = "";
+            if (section === "to-learn") {
+                moveButton = `<button class='btn btn-sm btn-warning float-end' onclick='moveWord("${word}", "to-learn", "learning")'>Move to Learning</button>`;
+            } else if (section === "learning") {
+                moveButton = `<button class='btn btn-sm btn-success float-end' onclick='moveWord("${word}", "learning", "mastered")'>Move to Mastered</button>`;
+            }
+            list.append(`<li class="list-group-item">${word} ${moveButton}</li>`);
         });
         $("#" + section + "-count").text(words[section].length);
     });
