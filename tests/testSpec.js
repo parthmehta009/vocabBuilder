@@ -15,12 +15,37 @@ describe("Vocabulary Tracker Tests", function() {
     });
 
     // ✅ Test for adding a single word
-    it("should add a word to the To-Learn list", function() {
-        $("body").append('<input type="text" id="new-word">'); // Ensure input exists
-        $("#new-word").val("example");
+    it("should add a single word to the To-Learn list if it does not exist", function() {
+        $("body").append('<input type="text" id="new-word">');
+        $("body").append('<div id="to-learn" class="section d-none"></div>');
+
+        $("#new-word").val("uniqueWord");
         addNewWord();
-        expect(words["to-learn"].includes("example")).toBe(true);
-        $("#new-word").remove(); // Cleanup
+
+        expect(words["to-learn"].includes("uniqueWord")).toBe(true);
+        expect($("#to-learn").hasClass("d-none")).toBe(false); // Should navigate to "To-Learn"
+
+        $("#new-word").remove();
+        $("#to-learn").remove();
+    });
+
+    it("should not add a duplicate word but navigate to To-Learn", function() {
+        words["to-learn"].push("duplicateWord"); // Word already exists
+
+        $("body").append('<input type="text" id="new-word">');
+        $("body").append('<div id="to-learn" class="section d-none"></div>');
+
+        $("#new-word").val("duplicateWord");
+        addNewWord();
+
+        // Word count should still be 1 (not added again)
+        expect(words["to-learn"].filter(w => w === "duplicateWord").length).toBe(1);
+
+        // Should navigate to "To-Learn"
+        expect($("#to-learn").hasClass("d-none")).toBe(false);
+
+        $("#new-word").remove();
+        $("#to-learn").remove();
     });
 
     // ✅ Test for bulk word addition
@@ -30,6 +55,22 @@ describe("Vocabulary Tracker Tests", function() {
         addBulkWords();
         expect(words["to-learn"]).toEqual(["apple", "banana", "cherry"]);
         $("#bulk-words").remove();
+    });
+
+    it("should add only unique words from bulk input", function() {
+        words["to-learn"].push("apple"); // Already exists
+
+        $("body").append('<textarea id="bulk-words"></textarea>');
+        $("body").append('<div id="to-learn" class="section d-none"></div>');
+
+        $("#bulk-words").val("apple, banana, cherry, apple"); // "apple" is a duplicate
+        addBulkWords();
+
+        expect(words["to-learn"]).toEqual(["apple", "banana", "cherry"]);
+        expect($("#to-learn").hasClass("d-none")).toBe(false); // Should navigate to "To-Learn"
+
+        $("#bulk-words").remove();
+        $("#to-learn").remove();
     });
 
     // ✅ Test for trimming spaces in bulk words

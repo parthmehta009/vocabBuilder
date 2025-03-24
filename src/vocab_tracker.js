@@ -17,23 +17,46 @@ function showBulkAddView() {
 
 function addNewWord() {
     let word = $("#new-word").val().trim();
-    if (word) {
-        words["to-learn"].push(word);
-        updateUI();
-        saveData();
-        $("#new-word").val("");
+
+    if (!word) return; // Ignore empty input
+
+    // Check if the word exists in any list
+    let exists = Object.values(words).some(list => list.includes(word));
+    if (exists) {
+        showSection("to-learn");
+        return; // Do not add if already exists
     }
+
+    words["to-learn"].push(word);
+    updateUI();
+    saveData();
+    $("#new-word").val("");
+
+    // Navigate to To-Learn view after adding
+    showSection("to-learn");
 }
 
 function addBulkWords() {
     let inputText = $("#bulk-words").val().trim();
-    if (inputText) {
-        let wordList = inputText.split(",").map(word => word.trim()).filter(word => word !== "");
-        words["to-learn"].push(...wordList);
+    if (!inputText) return; // Ignore empty input
+
+    let wordList = inputText.split(",").map(word => word.trim()).filter(word => word !== "");
+
+    // Remove words that already exist in any list
+    let newWords = wordList.filter(word =>
+        !Object.values(words).some(list => list.includes(word))
+    );
+
+    if (newWords.length > 0) {
+        words["to-learn"].push(...newWords);
         updateUI();
         saveData();
-        $("#bulk-words").val("");
     }
+
+    $("#bulk-words").val("");
+
+    // Navigate to To-Learn view after adding
+    showSection("to-learn");
 }
 
 function deleteWord(section, word) {
